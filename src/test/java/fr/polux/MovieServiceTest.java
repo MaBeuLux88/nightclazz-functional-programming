@@ -18,7 +18,7 @@ public class MovieServiceTest {
         movies.add(new Movie("A beautiful mind", 2001));
         movies.add(new Movie("Intouchable", 2011));
         movies.add(new Movie("Forest Gump", 1994));
-        List<Movie> moviesFound = movieService.findByTitle("Interstellar", movies);
+        List<Movie> moviesFound = movieService.findByTitle.apply("Interstellar").apply(movies);
         assertThat(moviesFound).isEmpty();
     }
 
@@ -29,7 +29,7 @@ public class MovieServiceTest {
         movies.add(new Movie("A beautiful mind", 2001));
         movies.add(new Movie("Intouchable", 2011));
         movies.add(new Movie("Forest Gump", 1994));
-        List<Movie> moviesFound = movieService.findByTitle("The Matrix", movies);
+        List<Movie> moviesFound = movieService.findByTitle.apply("The Matrix").apply(movies);
         assertThat(moviesFound).containsExactly(new Movie("The Matrix", 1999));
     }
 
@@ -40,7 +40,7 @@ public class MovieServiceTest {
         movies.add(new Movie("A beautiful mind", 2001));
         movies.add(new Movie("Intouchable", 2011));
         movies.add(new Movie("Forest Gump", 1994));
-        List<Movie> moviesFound = movieService.findByTitle("o", movies);
+        List<Movie> moviesFound = movieService.findByTitle.apply("o").apply(movies);
         List<Movie> expectedMovies = new ArrayList<>();
         expectedMovies.add(new Movie("Intouchable", 2011));
         expectedMovies.add(new Movie("Forest Gump", 1994));
