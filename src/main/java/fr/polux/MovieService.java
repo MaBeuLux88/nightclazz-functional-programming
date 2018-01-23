@@ -3,24 +3,26 @@ package fr.polux;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 public class MovieService {
 
     public List<Movie> findByTitle(String searchString, List<Movie> movies) {
         ArrayList<Movie> moviesFound = new ArrayList<>();
-
         BiFunction<String, Movie, Boolean> searchMethod = this::matches;
 
+        Consumer<Movie> add = movie -> moviesFound.add(movie);
+
         for (Movie movie : movies) {
-            addIfMatches(searchMethod, searchString, moviesFound, movie);
+            addIf(searchMethod, searchString, movie, add);
         }
         return moviesFound;
     }
 
-    private void addIfMatches(BiFunction<String, Movie, Boolean> searchMethod, String searchString,
-                              ArrayList<Movie> moviesFound, Movie movie) {
+    private void addIf(BiFunction<String, Movie, Boolean> searchMethod, String searchString, Movie movie,
+                       Consumer<Movie> add) {
         if (searchMethod.apply(searchString, movie))
-            moviesFound.add(movie);
+            add.accept(movie);
     }
 
     private boolean matches(String searchString, Movie movie) {
