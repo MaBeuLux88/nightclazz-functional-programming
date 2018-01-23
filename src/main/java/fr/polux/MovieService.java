@@ -1,17 +1,28 @@
 package fr.polux;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieService {
 
     public List<Movie> findByTitle(String searchString, List<Movie> movies) {
-        Iterator<Movie> iterator = movies.iterator();
-        while (iterator.hasNext()) {
-            Movie next = iterator.next();
-            if (!next.getTitle().contains(searchString))
-                iterator.remove();
+        ArrayList<Movie> moviesFound = new ArrayList<>();
+        for (Movie movie : movies) {
+            addIfMatches(searchString, moviesFound, movie);
         }
-        return movies;
+        return moviesFound;
+    }
+
+    private void addIfMatches(String searchString, ArrayList<Movie> moviesFound, Movie movie) {
+        if (matches(searchString, movie))
+            moviesFound.add(movie);
+    }
+
+    private boolean matches(String searchString, Movie movie) {
+        return containsSearchString(searchString, movie.getTitle());
+    }
+
+    private boolean containsSearchString(String searchString, String movie) {
+        return movie.contains(searchString);
     }
 }
