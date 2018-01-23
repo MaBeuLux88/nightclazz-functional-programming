@@ -11,18 +11,19 @@ public class MovieService {
         ArrayList<Movie> moviesFound = new ArrayList<>();
         BiFunction<String, Movie, Boolean> searchMethod = this::matches;
 
-        Consumer<Movie> add = movie -> moviesFound.add(movie);
+        Consumer<Movie> add = moviesFound::add;
 
-        for (Movie movie : movies) {
-            addIf(searchMethod, searchString, movie, add);
-        }
+        for (Movie movie : movies)
+            addIf(searchMethod, searchString, movie, add).accept(movie);
         return moviesFound;
     }
 
-    private void addIf(BiFunction<String, Movie, Boolean> searchMethod, String searchString, Movie movie,
-                       Consumer<Movie> add) {
+    private Consumer<Movie> addIf(BiFunction<String, Movie, Boolean> searchMethod, String searchString, Movie movie,
+                                  Consumer<Movie> add) {
         if (searchMethod.apply(searchString, movie))
-            add.accept(movie);
+            return add;
+        return m -> {};
+
     }
 
     private boolean matches(String searchString, Movie movie) {
